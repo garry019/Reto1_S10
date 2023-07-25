@@ -8,6 +8,7 @@ TagManager:
   - MazeGeo
   - Ghost
   - EnergyCell
+  - LabyrinthKey
   layers:
   - Default
   - TransparentFX
