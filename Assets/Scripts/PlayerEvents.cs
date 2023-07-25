@@ -12,6 +12,13 @@ public class PlayerEvents : MonoBehaviour
 
     private int score = 0;
     public string gameOverText = "Game Over";
+    public AudioSource dots;
+    public AudioSource death;
+
+    private void Awake()
+    {
+        dots = GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
@@ -26,6 +33,7 @@ public class PlayerEvents : MonoBehaviour
         if (collision.gameObject.CompareTag("Ghost"))
         {
             Destroy(this);
+            death.Play();
             scoreText.text = gameOverText;
             PauseGame();
         }
@@ -33,6 +41,7 @@ public class PlayerEvents : MonoBehaviour
         if (collision.gameObject.CompareTag("EnergyCell"))
         {
             score++;
+            dots.Play();
             scoreText.text = score.ToString();
             Destroy(collision.gameObject);
         }
