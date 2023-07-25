@@ -1,24 +1,30 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class GhostMove : MonoBehaviour
 {
 
     
     [SerializeField] private Transform Player;
-    public Vector3[] targetPositions;
-    private NavMeshAgent agent;
+    [SerializeField] public float ChaseTime;
+    [SerializeField] public float ScatterTime;
 
-    bool chase = true;
-    bool scatter = false;
-    int nextPos = 0;
+    public Vector3[] targetPositions;
+    public bool chase;
+
+    private NavMeshAgent agent;
+    private int nextPos = 0;
+    private bool scatter = false;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        if (chase == false)
+        {
+            scatter = true;
+        }
     }
 
     private void Start()
@@ -32,7 +38,6 @@ public class GhostMove : MonoBehaviour
             StartCoroutine(GhostChase());
             StartCoroutine(GhostScatter());
         }
-        
     }
 
     private void Update()
@@ -47,7 +52,7 @@ public class GhostMove : MonoBehaviour
         if (scatter == true)
         {
             //Cambio de posición
-            if (nextPos <= 2)
+            if (nextPos < 2)
             {
                 agent.destination = targetPositions[nextPos];
 
@@ -81,7 +86,7 @@ public class GhostMove : MonoBehaviour
         while (true)
         {
             yield return new WaitUntil(() => chase == true);
-            yield return new WaitForSeconds(20);
+            yield return new WaitForSeconds(ChaseTime);
             Scatter();
         }
     }
@@ -91,7 +96,7 @@ public class GhostMove : MonoBehaviour
         while (true)
         {
             yield return new WaitUntil(() => scatter == true);
-            yield return new WaitForSeconds(7);
+            yield return new WaitForSeconds(ScatterTime);
             Chase();
         }
     }
