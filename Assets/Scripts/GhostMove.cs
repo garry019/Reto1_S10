@@ -16,7 +16,12 @@ public class GhostMove : MonoBehaviour
 
     private void Update()
     {
-        agent.destination  = movePositionTransform.position;
+        attack();
+    }
+
+    public void attack()
+    {
+        agent.destination = movePositionTransform.position;
     }
 
 }
