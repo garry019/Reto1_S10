@@ -9,6 +9,8 @@ TagManager:
   - Ghost
   - EnergyCell
   - LabyrinthKey
+  - LeftCollision
+  - RightCollision
   layers:
   - Default
   - TransparentFX

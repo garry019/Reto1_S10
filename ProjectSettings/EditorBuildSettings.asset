@@ -4,4 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Reto 1/Intro.unity
+    guid: 219f03b378cce7149acc49596dba18c9
+  - enabled: 1
+    path: Assets/Scenes/Reto 1/Reto_1.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  m_configObjects: {}

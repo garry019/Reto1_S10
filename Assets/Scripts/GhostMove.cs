@@ -11,24 +11,27 @@ public class GhostMove : MonoBehaviour
     [SerializeField] public float ChaseTime;
     [SerializeField] public float ScatterTime;
 
+    
     public Vector3[] targetPositions;
-    public bool chase;
-
     private NavMeshAgent agent;
+    public bool chase;
     private int nextPos = 0;
     private bool scatter = false;
+    private bool playScene = false;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        if (chase == false)
-        {
-            scatter = true;
-        }
+        
     }
 
     private void Start()
     {
+        if (chase == false)
+        {
+            scatter = true;
+        }
+
         if (targetPositions.Length < 3)
         {
             Debug.Log("Debes asignar las posiciones.");
@@ -42,14 +45,15 @@ public class GhostMove : MonoBehaviour
 
     private void Update()
     {
+
         //Verificación de posiciones asignadas
-        if (chase == true && targetPositions.Length == 3)
+        if (chase == true && targetPositions.Length == 3 && playScene == true)
         {
             agent.destination = Player.position;
             nextPos = 0;
         }
 
-        if (scatter == true)
+        if (scatter == true && playScene == true)
         {
             //Cambio de posición
             if (nextPos < 2)
@@ -82,6 +86,8 @@ public class GhostMove : MonoBehaviour
 
     private IEnumerator GhostChase()
     {
+        yield return new WaitForSeconds(3.5f);
+        playScene = true;
 
         while (true)
         {

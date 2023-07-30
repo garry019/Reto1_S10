@@ -4,25 +4,33 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PlayerEvents : MonoBehaviour
 {
-    [SerializeField] public TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] public GameObject labyrinthKey;
-
+    [SerializeField] public AudioSource intro;
+    [SerializeField] public AudioSource music;
+    [SerializeField] public AudioSource win;
+    [SerializeField] public AudioSource dots;
+    [SerializeField] public AudioSource death;
+    [SerializeField] public AudioSource teleport;
     private int score = 0;
+    private int scoreToWin = 15;
     public string gameOverText = "Game Over";
-    public AudioSource dots;
-    public AudioSource death;
+    public string gameWinnerText = "Youn have Win!";
 
-    private void Awake()
+    private void Start()
     {
-        dots = GetComponent<AudioSource>();
+        intro.Play();
     }
 
     private void Update()
     {
-        if (score == 139)
+        if (score == scoreToWin)
         {
             labyrinthKey.SetActive(true);
         }
@@ -33,13 +41,15 @@ public class PlayerEvents : MonoBehaviour
         if (collision.gameObject.CompareTag("Ghost"))
         {
             Destroy(this);
+            music.Stop();
             death.Play();
-            scoreText.text = gameOverText;
+            resultText.text = gameOverText;
             PauseGame();
         }
 
         if (collision.gameObject.CompareTag("EnergyCell"))
         {
+            StartCoroutine(ScoreAnimation());
             score++;
             dots.Play();
             scoreText.text = score.ToString();
@@ -48,13 +58,39 @@ public class PlayerEvents : MonoBehaviour
 
         if (collision.gameObject.CompareTag("LabyrinthKey"))
         {
-            scoreText.text = "Win!!";
+            resultText.text = gameWinnerText;
+            music.Stop();
+            win.Play();
             PauseGame();
+        }
+
+        if (collision.gameObject.CompareTag("LeftCollision"))
+        {
+            transform.position = new Vector2(10f, 0);
+            teleport.Play();
+        }
+
+        if (collision.gameObject.CompareTag("RightCollision"))
+        {
+            transform.position = new Vector2(-10f, 0);
+            teleport.Play();
         }
     }
 
-    void PauseGame()
+    private void PauseGame()
     {
         Time.timeScale = 0;
+    }
+
+
+    private IEnumerator ScoreAnimation()
+    {
+        while (true)
+        {
+            scoreText.transform.LeanScale(Vector2.one * 2f, 0.1f).setEaseInOutBack();
+            yield return new WaitForSeconds(0.1f);
+            scoreText.transform.LeanScale(Vector2.one, 0.1f).setEaseInOutBack();
+            yield break;
+        }
     }
 }
