@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
+    public PlayerEvents script;
     public float speed = 5f;
     public float rotationSpeed = 20f;
-    private bool playScene = false;
-
-    private void Start()
-    {
-        StartCoroutine(goScene()); 
-    }
 
     void Update()
     {
-        if (playScene == true) {
+        if (script.playScene == true) {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
 
@@ -25,12 +20,6 @@ public class Move : MonoBehaviour
 
             if (movement != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), rotationSpeed * Time.deltaTime);
         }
-    }
-
-    private IEnumerator goScene()
-    {
-        yield return new WaitForSeconds(3.5f);
-        playScene = true;
     }
 
 }

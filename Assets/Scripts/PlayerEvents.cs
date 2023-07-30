@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerEvents : MonoBehaviour
 {
+    public bool playScene = false;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] public GameObject labyrinthKey;
@@ -18,21 +19,28 @@ public class PlayerEvents : MonoBehaviour
     [SerializeField] public AudioSource dots;
     [SerializeField] public AudioSource death;
     [SerializeField] public AudioSource teleport;
+    [SerializeField] public AudioSource fruit;
+
     private int score = 0;
     private int scoreToWin = 15;
     public string gameOverText = "Game Over";
     public string gameWinnerText = "Youn have Win!";
 
+
     private void Start()
     {
         intro.Play();
+        StartCoroutine(goScene());
     }
 
     private void Update()
     {
         if (score == scoreToWin)
         {
+            labyrinthKey.transform.localScale = Vector3.zero;
             labyrinthKey.SetActive(true);
+            fruit.Play();
+            StartCoroutine(LabyrinthKeyAnimation());
         }
     }
 
@@ -44,7 +52,8 @@ public class PlayerEvents : MonoBehaviour
             music.Stop();
             death.Play();
             resultText.text = gameOverText;
-            PauseGame();
+            playScene = false;
+
         }
 
         if (collision.gameObject.CompareTag("EnergyCell"))
@@ -61,7 +70,7 @@ public class PlayerEvents : MonoBehaviour
             resultText.text = gameWinnerText;
             music.Stop();
             win.Play();
-            PauseGame();
+            playScene = false;
         }
 
         if (collision.gameObject.CompareTag("LeftCollision"))
@@ -77,12 +86,6 @@ public class PlayerEvents : MonoBehaviour
         }
     }
 
-    private void PauseGame()
-    {
-        Time.timeScale = 0;
-    }
-
-
     private IEnumerator ScoreAnimation()
     {
         while (true)
@@ -92,5 +95,21 @@ public class PlayerEvents : MonoBehaviour
             scoreText.transform.LeanScale(Vector2.one, 0.1f).setEaseInOutBack();
             yield break;
         }
+    }
+    private IEnumerator LabyrinthKeyAnimation()
+    {
+        while (true)
+        {
+            labyrinthKey.transform.LeanScale(Vector3.one * 40f, 0.5f).setEaseInOutBack();
+            yield return new WaitForSeconds(0.1f);
+            labyrinthKey.transform.LeanScale(Vector3.one, 0.5f).setEaseInOutBack();
+            yield break;
+        }
+    }
+
+    private IEnumerator goScene()
+    {
+        yield return new WaitForSeconds(3.5f);
+        playScene = true;
     }
 }
