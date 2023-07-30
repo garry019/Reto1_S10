@@ -15,9 +15,9 @@ public class GhostMove : MonoBehaviour
 
     public Vector3[] targetPositions;
     private NavMeshAgent agent;
-    public bool chase = false;
+    public bool chase;
     private int nextPos = 0;
-    private bool scatter;
+    private bool scatter = false;
 
     private void Awake()
     {
@@ -27,17 +27,16 @@ public class GhostMove : MonoBehaviour
 
     private void Start()
     {
-        
+        if (scatter == false) {
+            chase = true;
+        }
+
         if (targetPositions.Length < 3)
         {
             Debug.Log("Debes asignar las posiciones.");
         }
         else
         {
-            if (chase == false)
-            {
-                scatter = true;
-            }
             StartCoroutine(GhostChase());
             StartCoroutine(GhostScatter());
         }
@@ -94,7 +93,7 @@ public class GhostMove : MonoBehaviour
 
     private IEnumerator GhostChase()
     {
-        while (true && script.playScene == true)
+        while (true)
         {
             yield return new WaitUntil(() => chase == true);
             yield return new WaitForSeconds(ChaseTime);
@@ -104,7 +103,7 @@ public class GhostMove : MonoBehaviour
 
     private IEnumerator GhostScatter()
     {
-        while (true && script.playScene == true)
+        while (true)
         {
             yield return new WaitUntil(() => scatter == true);
             yield return new WaitForSeconds(ScatterTime);

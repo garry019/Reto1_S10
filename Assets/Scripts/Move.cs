@@ -10,7 +10,8 @@ public class Move : MonoBehaviour
 
     void Update()
     {
-        if (script.playScene == true) {
+        if (script.playScene == true)
+        {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
 

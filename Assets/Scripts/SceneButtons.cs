@@ -25,6 +25,10 @@ public class SceneButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         SceneManager.LoadScene("Reto_1");
     }
+    public void TryAgain()
+    {
+        SceneManager.LoadScene("Reto_1");
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
