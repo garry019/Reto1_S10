@@ -30,6 +30,11 @@ public class SceneButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         SceneManager.LoadScene("Reto_1");
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.LeanScale(Vector2.one * 1.5f, 0.2f).setEaseInOutBack();
